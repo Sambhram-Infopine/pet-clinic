@@ -4,7 +4,9 @@ import com.petclinic.backend.dao.OwnerDao;
 import com.petclinic.backend.dto.OwnerRequestDto;
 import com.petclinic.backend.dto.OwnerResponseDto;
 import com.petclinic.backend.entity.Owner;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class OwnerServiceImpl implements OwnerService {
@@ -26,6 +28,14 @@ public class OwnerServiceImpl implements OwnerService {
                 .build();
 
         return toResponse(ownerDao.save(owner));
+    }
+
+    @Override
+    public OwnerResponseDto getOwnerById(Long id) {
+        Owner owner = ownerDao.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found"));
+
+        return toResponse(owner);
     }
 
     private OwnerResponseDto toResponse(Owner owner) {

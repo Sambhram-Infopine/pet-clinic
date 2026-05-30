@@ -6,4 +6,6 @@ import com.petclinic.backend.dto.PetResponseDto;
 public interface PetService {
 
     PetResponseDto createPet(PetRequestDto request);
+
+    PetResponseDto getPetById(Long id);
 }

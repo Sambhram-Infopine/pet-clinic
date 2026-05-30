@@ -6,4 +6,6 @@ import com.petclinic.backend.dto.OwnerResponseDto;
 public interface OwnerService {
 
     OwnerResponseDto createOwner(OwnerRequestDto request);
+
+    OwnerResponseDto getOwnerById(Long id);
 }

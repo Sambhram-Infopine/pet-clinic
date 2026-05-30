@@ -42,6 +42,14 @@ public class PetServiceImpl implements PetService {
         return toResponse(petDao.save(pet));
     }
 
+    @Override
+    public PetResponseDto getPetById(Long id) {
+        Pet pet = petDao.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet not found"));
+
+        return toResponse(pet);
+    }
+
     private PetResponseDto toResponse(Pet pet) {
         return PetResponseDto.builder()
                 .id(pet.getId())
