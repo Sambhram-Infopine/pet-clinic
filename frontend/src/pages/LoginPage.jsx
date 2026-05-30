@@ -22,10 +22,10 @@ function PawIcon() {
 }
 
 async function loginRequest(email, password) {
-  const response = await fetch('/login', {
+  const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ usernameOrEmail: email, password }),
   });
 
   let data;
