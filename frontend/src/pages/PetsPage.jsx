@@ -392,6 +392,7 @@ export default function PetsPage() {
                   <tr>
                     <th scope="col">Pet name</th>
                     <th scope="col">Pet type</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -399,6 +400,18 @@ export default function PetsPage() {
                     <tr key={pet.id}>
                       <td>{pet.name}</td>
                       <td>{formatPetTypeLabel(pet.petTypeName)}</td>
+                      <td>
+                        <button
+                          type="button"
+                          className="pets-page__record-btn"
+                          onClick={() =>
+                            navigate(`/visits/new?petId=${pet.id}`)
+                          }
+                          disabled={pageLoading || saving}
+                        >
+                          Record Visit →
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

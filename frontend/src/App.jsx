@@ -11,6 +11,7 @@ import AddOwnerPage from './pages/AddOwnerPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import PetsPage from './pages/PetsPage.jsx';
+import RecordVisitPage from './pages/RecordVisitPage.jsx';
 import VeterinariansPage from './pages/VeterinariansPage.jsx';
 
 function AddOwnerRoute() {
@@ -42,6 +43,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PetsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/visits/new"
+          element={
+            <ProtectedRoute>
+              <RecordVisitPage />
             </ProtectedRoute>
           }
         />
