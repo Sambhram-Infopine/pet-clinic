@@ -1,0 +1,234 @@
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+}
+
+.home-main {
+  flex: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 32px 24px 48px;
+}
+
+/* Hero */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+  background: var(--color-primary-light);
+  border-radius: var(--radius-xl);
+  padding: 48px 56px;
+  margin-bottom: 40px;
+  border: 1px solid var(--color-primary-muted);
+}
+
+.hero__title {
+  margin: 0 0 16px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  letter-spacing: -0.02em;
+}
+
+.hero__title-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--color-primary);
+}
+
+.hero__subtitle {
+  margin: 0 0 20px;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+.hero__divider {
+  width: 48px;
+  height: 4px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.hero__tagline {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+}
+
+.hero__visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-illustration {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
+
+/* Quick actions */
+.quick-actions__heading {
+  margin: 0 0 20px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.quick-actions__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.action-card {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 28px 32px;
+  border-radius: var(--radius-xl);
+  border: 1px solid transparent;
+}
+
+.action-card--blue {
+  background: var(--color-card-blue);
+  border-color: #dbeafe;
+}
+
+.action-card--green {
+  background: var(--color-card-green);
+  border-color: #bbf7d0;
+}
+
+.action-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.action-card__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.action-card__icon--blue {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.action-card__icon--green {
+  background: var(--color-accent-green);
+  color: #fff;
+}
+
+.action-card__title {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.action-card__desc {
+  margin: 0 0 20px;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  max-width: 280px;
+}
+
+.action-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: transparent;
+  border-radius: var(--radius-md);
+  border: 2px solid;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.action-card__btn--blue {
+  color: #2563eb;
+  border-color: #2563eb;
+}
+
+.action-card__btn--blue:hover {
+  background: #2563eb;
+  color: #fff;
+}
+
+.action-card__btn--green {
+  color: var(--color-accent-green);
+  border-color: var(--color-accent-green);
+}
+
+.action-card__btn--green:hover {
+  background: var(--color-accent-green);
+  color: #fff;
+}
+
+.action-card__decor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 120px;
+  height: 120px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.action-card__decor--blue {
+  background: radial-gradient(circle at 100% 100%, #3b82f6 0%, transparent 70%);
+}
+
+.action-card__decor--green {
+  background: radial-gradient(circle at 100% 100%, #22c55e 0%, transparent 70%);
+}
+
+.home-footer {
+  padding: 24px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 32px 28px;
+    text-align: center;
+  }
+
+  .hero__subtitle,
+  .hero__tagline {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero__divider {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .quick-actions__grid {
+    grid-template-columns: 1fr;
+  }
+}
