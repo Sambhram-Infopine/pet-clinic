@@ -12,6 +12,7 @@ import com.petclinic.backend.entity.Veterinarian;
 import com.petclinic.backend.entity.Visit;
 import java.time.LocalDate;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -49,9 +50,10 @@ public class VisitServiceImpl implements VisitService {
     @Override
     public List<VisitHistoryResponseDto> getVisitHistory(Long ownerId, Long petId, LocalDate date) {
         if (ownerId == null && petId == null && date == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "At least one filter is required: ownerId, petId, or date");
+            return visitDao.findLatestVisitHistory(PageRequest.of(0, 10))
+                    .stream()
+                    .map(this::toHistoryResponse)
+                    .toList();
         }
 
         return visitDao.findVisitHistory(ownerId, petId, date)

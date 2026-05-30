@@ -5,9 +5,11 @@ import com.petclinic.backend.dao.PetDao;
 import com.petclinic.backend.dao.PetTypeDao;
 import com.petclinic.backend.dto.PetRequestDto;
 import com.petclinic.backend.dto.PetResponseDto;
+import com.petclinic.backend.dto.PetSearchResponseDto;
 import com.petclinic.backend.entity.Owner;
 import com.petclinic.backend.entity.Pet;
 import com.petclinic.backend.entity.PetType;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,6 +52,18 @@ public class PetServiceImpl implements PetService {
         return toResponse(pet);
     }
 
+    @Override
+    public List<PetSearchResponseDto> searchPetsByName(String name) {
+        if (name == null || name.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Pet name is required");
+        }
+
+        return petDao.searchByNameWithOwner(name.trim())
+                .stream()
+                .map(this::toSearchResponse)
+                .toList();
+    }
+
     private PetResponseDto toResponse(Pet pet) {
         return PetResponseDto.builder()
                 .id(pet.getId())
@@ -58,6 +72,21 @@ public class PetServiceImpl implements PetService {
                 .ownerId(pet.getOwner().getId())
                 .petTypeId(pet.getPetType().getId())
                 .petTypeName(pet.getPetType().getName())
+                .build();
+    }
+
+    private PetSearchResponseDto toSearchResponse(Pet pet) {
+        Owner owner = pet.getOwner();
+
+        return PetSearchResponseDto.builder()
+                .petId(pet.getId())
+                .petName(pet.getName())
+                .birthDate(pet.getBirthDate())
+                .petTypeId(pet.getPetType().getId())
+                .petTypeName(pet.getPetType().getName())
+                .ownerId(owner.getId())
+                .ownerName(owner.getFirstName() + " " + owner.getLastName())
+                .ownerTelephoneNumber(owner.getTelephoneNumber())
                 .build();
     }
 }
