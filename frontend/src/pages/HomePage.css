@@ -92,6 +92,10 @@
   gap: 24px;
 }
 
+.quick-actions__grid--single {
+  grid-template-columns: minmax(0, 420px);
+}
+
 .action-card {
   position: relative;
   overflow: hidden;

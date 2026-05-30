@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import AppNavbar from '../components/AppNavbar.jsx';
 import { vi } from 'vitest';

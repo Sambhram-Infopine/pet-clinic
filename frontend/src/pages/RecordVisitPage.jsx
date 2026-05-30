@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { createVisit } from '../api/visits.js';
 import { getVeterinarians } from '../api/veterinarians.js';
 import AppFooter from '../components/AppFooter.jsx';
@@ -115,6 +115,8 @@ function CalendarIcon() {
 
 export default function RecordVisitPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromPetLookup = Boolean(location.state?.fromPetLookup);
   const [searchParams] = useSearchParams();
   const ownerId = getCurrentOwnerId();
   const initialPetId = searchParams.get('petId') ?? '';
@@ -122,7 +124,7 @@ export default function RecordVisitPage() {
   const owner = getCurrentOwnerSnapshot();
   const pets = useMemo(
     () => (ownerId ? getStoredPets(ownerId) : []),
-    [ownerId],
+    [ownerId]
   );
 
   const [veterinarians, setVeterinarians] = useState([]);
@@ -272,12 +274,20 @@ export default function RecordVisitPage() {
 
       <main className="record-visit-page__main">
         <Breadcrumbs
-          items={[
-            { label: 'Home', to: '/' },
-            { label: 'Add Owner', to: '/owners/new' },
-            { label: 'Pet Details', to: '/pets' },
-            { label: 'Record Visit' },
-          ]}
+          items={
+            fromPetLookup
+              ? [
+                  { label: 'Home', to: '/' },
+                  { label: 'Pet Lookup', to: '/pet-lookup' },
+                  { label: 'Record Visit' },
+                ]
+              : [
+                  { label: 'Home', to: '/' },
+                  { label: 'Add Owner', to: '/owners/new' },
+                  { label: 'Pet Details', to: '/pets' },
+                  { label: 'Record Visit' },
+                ]
+          }
         />
 
         <header className="record-visit-page__header">
@@ -424,16 +434,22 @@ export default function RecordVisitPage() {
               <button
                 type="button"
                 className="record-visit-page__btn record-visit-page__btn--outline"
-                onClick={() => navigate('/pets')}
+                onClick={() =>
+                  navigate(fromPetLookup ? '/pet-lookup' : '/pets')
+                }
                 disabled={pageLoading || saving}
               >
-                ← Back to Pet Details
+                {fromPetLookup
+                  ? '← Back to Pet Lookup'
+                  : '← Back to Pet Details'}
               </button>
               <div className="record-visit-page__actions-right">
                 <button
                   type="button"
                   className="record-visit-page__btn record-visit-page__btn--secondary"
-                  onClick={() => navigate('/pets')}
+                  onClick={() =>
+                    navigate(fromPetLookup ? '/pet-lookup' : '/pets')
+                  }
                   disabled={pageLoading || saving}
                 >
                   Cancel

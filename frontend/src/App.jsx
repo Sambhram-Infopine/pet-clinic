@@ -10,8 +10,10 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import AddOwnerPage from './pages/AddOwnerPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import PetLookupPage from './pages/PetLookupPage.jsx';
 import PetsPage from './pages/PetsPage.jsx';
 import RecordVisitPage from './pages/RecordVisitPage.jsx';
+import VisitHistoryPage from './pages/VisitHistoryPage.jsx';
 import VeterinariansPage from './pages/VeterinariansPage.jsx';
 
 function AddOwnerRoute() {
@@ -39,10 +41,26 @@ function App() {
         />
         <Route path="/owners/new" element={<AddOwnerRoute />} />
         <Route
+          path="/pet-lookup"
+          element={
+            <ProtectedRoute>
+              <PetLookupPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/pets"
           element={
             <ProtectedRoute>
               <PetsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/visits"
+          element={
+            <ProtectedRoute>
+              <VisitHistoryPage />
             </ProtectedRoute>
           }
         />

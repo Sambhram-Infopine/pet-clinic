@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import AppFooter from '../components/AppFooter.jsx';
 import AppNavbar from '../components/AppNavbar.jsx';
 import { PawIcon } from '../components/BrandLogo.jsx';
@@ -5,7 +6,14 @@ import HeroIllustration from '../components/HeroIllustration.jsx';
 import '../components/BrandLogo.css';
 import './HomePage.css';
 
-function QuickActionCard({ variant, title, description, buttonLabel, icon }) {
+function QuickActionCard({
+  variant,
+  title,
+  description,
+  buttonLabel,
+  icon,
+  onClick,
+}) {
   return (
     <article className={`action-card action-card--${variant}`}>
       <div className={`action-card__icon action-card__icon--${variant}`}>
@@ -16,6 +24,7 @@ function QuickActionCard({ variant, title, description, buttonLabel, icon }) {
       <button
         type="button"
         className={`action-card__btn action-card__btn--${variant}`}
+        onClick={onClick}
       >
         {buttonLabel}
         <span aria-hidden="true">→</span>
@@ -29,6 +38,8 @@ function QuickActionCard({ variant, title, description, buttonLabel, icon }) {
 }
 
 export default function HomePage() {
+  const navigate = useNavigate();
+
   return (
     <div className="home-page">
       <AppNavbar activeNav="home" />
@@ -54,43 +65,13 @@ export default function HomePage() {
 
         <section className="quick-actions">
           <h2 className="quick-actions__heading">Quick Actions</h2>
-          <div className="quick-actions__grid">
-            <QuickActionCard
-              variant="blue"
-              title="Find Owners"
-              description="Search and view owner profiles. Manage their details and pets."
-              buttonLabel="Search Owners"
-              icon={
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <circle
-                    cx="14"
-                    cy="12"
-                    r="6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                  />
-                  <path
-                    d="M19 17l5 5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                  <circle
-                    cx="22"
-                    cy="10"
-                    r="4"
-                    fill="currentColor"
-                    opacity="0.3"
-                  />
-                </svg>
-              }
-            />
+          <div className="quick-actions__grid quick-actions__grid--single">
             <QuickActionCard
               variant="green"
               title="Pet Lookup"
               description="Search for a pet and view its profile, visit history and related details."
               buttonLabel="Lookup Pet"
+              onClick={() => navigate('/pet-lookup')}
               icon={
                 <svg viewBox="0 0 32 32" aria-hidden="true">
                   <ellipse cx="16" cy="22" rx="6" ry="5" fill="currentColor" />
