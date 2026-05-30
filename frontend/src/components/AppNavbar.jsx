@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import BrandLogo from './BrandLogo.jsx';
 import { clearAccessToken } from '../constants/auth.js';
-import { clearCurrentOwnerId } from '../constants/owner.js';
+import { clearOwnerWorkflow } from '../constants/owner.js';
 import './BrandLogo.css';
 import './AppNavbar.css';
 
@@ -101,7 +101,7 @@ export default function AppNavbar({ activeNav = 'home' }) {
 
   function handleLogout() {
     clearAccessToken();
-    clearCurrentOwnerId();
+    clearOwnerWorkflow();
     navigate('/login', { replace: true });
   }
 

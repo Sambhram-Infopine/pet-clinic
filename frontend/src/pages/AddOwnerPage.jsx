@@ -4,7 +4,15 @@ import { createOwner } from '../api/owners.js';
 import AppFooter from '../components/AppFooter.jsx';
 import AppNavbar from '../components/AppNavbar.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
-import { setCurrentOwnerId } from '../constants/owner.js';
+import {
+  formToSnapshot,
+  getCurrentOwnerId,
+  getCurrentOwnerSnapshot,
+  hasSavedOwnerInSession,
+  setCurrentOwnerId,
+  setCurrentOwnerSnapshot,
+  snapshotToForm,
+} from '../constants/owner.js';
 import './AddOwnerPage.css';
 
 const PHONE_MAX_LENGTH = 10;
@@ -79,16 +87,31 @@ function UserPageIcon() {
   );
 }
 
+function getInitialOwnerForm() {
+  return snapshotToForm(getCurrentOwnerSnapshot()) ?? EMPTY_FORM;
+}
+
 export default function AddOwnerPage() {
   const navigate = useNavigate();
-  const [form, setForm] = useState(EMPTY_FORM);
+  const [form, setForm] = useState(getInitialOwnerForm);
   const [fieldErrors, setFieldErrors] = useState({});
   const [bannerError, setBannerError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  function persistOwnerDraft(nextForm) {
+    const ownerId = getCurrentOwnerId();
+    setCurrentOwnerSnapshot(
+      formToSnapshot(nextForm, ownerId ? Number(ownerId) : undefined)
+    );
+  }
+
   function updateField(name, value) {
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => {
+      const nextForm = { ...prev, [name]: value };
+      persistOwnerDraft(nextForm);
+      return nextForm;
+    });
     setFieldErrors((prev) => {
       const next = { ...prev };
       delete next[name];
@@ -107,6 +130,23 @@ export default function AddOwnerPage() {
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       if (errors.form) setBannerError(errors.form);
+      return;
+    }
+
+    const finishSave = (nextAction) => {
+      if (nextAction === 'pets') {
+        navigate('/pets');
+        return;
+      }
+
+      setSuccessMessage('Owner saved successfully.');
+      setTimeout(() => navigate('/'), 800);
+    };
+
+    if (hasSavedOwnerInSession()) {
+      const ownerId = Number(getCurrentOwnerId());
+      setCurrentOwnerSnapshot(formToSnapshot(form, ownerId));
+      finishSave(nextAction);
       return;
     }
 
@@ -140,19 +180,24 @@ export default function AddOwnerPage() {
       }
 
       setCurrentOwnerId(owner.id);
-
-      if (nextAction === 'pets') {
-        navigate('/pets', { replace: true });
-        return;
-      }
-
-      setSuccessMessage('Owner saved successfully.');
-      setTimeout(() => navigate('/', { replace: true }), 800);
+      setCurrentOwnerSnapshot(owner);
+      finishSave(nextAction);
     } catch {
       setBannerError('Unable to save owner. Please try again.');
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleContinueToPets() {
+    if (hasSavedOwnerInSession()) {
+      const ownerId = Number(getCurrentOwnerId());
+      setCurrentOwnerSnapshot(formToSnapshot(form, ownerId));
+      navigate('/pets');
+      return;
+    }
+
+    handleSave('pets');
   }
 
   function handleCancel() {
@@ -173,7 +218,9 @@ export default function AddOwnerPage() {
           <div>
             <h1 className="add-owner-page__title">Add New Owner</h1>
             <p className="add-owner-page__subtitle">
-              Enter owner details to create a new owner profile.
+              {hasSavedOwnerInSession()
+                ? 'Update owner details or continue adding pets.'
+                : 'Enter owner details to create a new owner profile.'}
             </p>
           </div>
         </header>
@@ -330,7 +377,7 @@ export default function AddOwnerPage() {
                 <button
                   type="button"
                   className="add-owner-btn add-owner-btn--primary"
-                  onClick={() => handleSave('pets')}
+                  onClick={handleContinueToPets}
                   disabled={loading}
                 >
                   {loading ? 'Saving…' : 'Save and Continue to Pet Details'}
