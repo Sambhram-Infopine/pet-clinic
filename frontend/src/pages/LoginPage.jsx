@@ -1,25 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PawIcon } from '../components/BrandLogo.jsx';
+import { ACCESS_TOKEN_KEY } from '../constants/auth.js';
+import '../components/BrandLogo.css';
 import './LoginPage.css';
 
-const ACCESS_TOKEN_KEY = 'access_token';
-
-function PawIcon() {
-  return (
-    <svg
-      className="login-brand__icon"
-      viewBox="0 0 48 48"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <ellipse cx="24" cy="34" rx="10" ry="8" />
-      <circle cx="12" cy="20" r="6" />
-      <circle cx="24" cy="14" r="6" />
-      <circle cx="36" cy="20" r="6" />
-      <circle cx="8" cy="30" r="5" />
-      <circle cx="40" cy="30" r="5" />
-    </svg>
-  );
-}
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 async function loginRequest(email, password) {
   const response = await fetch('/api/auth/login', {
@@ -34,7 +20,16 @@ async function loginRequest(email, password) {
   } catch {
     return {
       success: false,
-      message: 'Invalid response from server.',
+      message: response.ok
+        ? 'Invalid response from server.'
+        : `Request failed (${response.status}). Please try again.`,
+    };
+  }
+
+  if (!response.ok) {
+    return {
+      success: false,
+      message: getErrorMessage(data),
     };
   }
 
@@ -51,13 +46,21 @@ function getErrorMessage(data) {
 }
 
 function validateFields(email, password) {
-  if (!email.trim() || !password.trim()) {
+  const trimmedEmail = email.trim();
+
+  if (!trimmedEmail || !password.trim()) {
     return 'Please fill all fields before login.';
   }
+
+  if (!EMAIL_PATTERN.test(trimmedEmail)) {
+    return 'Please enter a valid email address.';
+  }
+
   return '';
 }
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -80,9 +83,12 @@ export default function LoginPage() {
 
       if (data.success) {
         const token = data.access_token ?? data.accessToken;
-        if (token) {
-          sessionStorage.setItem(ACCESS_TOKEN_KEY, token);
+        if (!token) {
+          setError('Login succeeded but no access token was returned. Please try again.');
+          return;
         }
+        sessionStorage.setItem(ACCESS_TOKEN_KEY, token);
+        navigate('/', { replace: true });
         return;
       }
 
@@ -98,7 +104,7 @@ export default function LoginPage() {
     <div className="login-page">
       <div className="login-card">
         <div className="login-brand">
-          <PawIcon />
+          <PawIcon className="login-brand__icon" />
           <h1 className="login-brand__title">VetCare</h1>
           <p className="login-brand__subtitle">Clinic Management</p>
         </div>
@@ -122,7 +128,10 @@ export default function LoginPage() {
               autoComplete="email"
               placeholder="you@clinic.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (error) setError('');
+              }}
               required
               disabled={loading}
             />
@@ -137,7 +146,10 @@ export default function LoginPage() {
               autoComplete="current-password"
               placeholder="Enter your password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (error) setError('');
+              }}
               required
               disabled={loading}
             />
