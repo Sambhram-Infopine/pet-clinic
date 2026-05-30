@@ -1,15 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import BrandLogo from './BrandLogo.jsx';
 import { clearAccessToken } from '../constants/auth.js';
+import { clearCurrentOwnerId } from '../constants/owner.js';
 import './BrandLogo.css';
 import './AppNavbar.css';
 
 const NAV_ITEMS = [
-  { id: 'home', label: 'Home', active: true, icon: 'home' },
-  { id: 'owners', label: 'Find Owners', icon: 'search' },
-  { id: 'pets', label: 'Pet Lookup', icon: 'paw' },
-  { id: 'vets', label: 'Veterinarians', icon: 'person' },
-  { id: 'visits', label: 'Visit History', icon: 'calendar' },
+  { id: 'home', label: 'Home', path: '/', icon: 'home' },
+  { id: 'owners', label: 'Find Owners', path: null, icon: 'search' },
+  { id: 'pets', label: 'Pet Lookup', path: '/pets', icon: 'paw' },
+  { id: 'vets', label: 'Veterinarians', path: null, icon: 'person' },
+  { id: 'visits', label: 'Visit History', path: null, icon: 'calendar' },
 ];
 
 function NavIcon({ name }) {
@@ -24,8 +25,20 @@ function NavIcon({ name }) {
     ),
     search: (
       <>
-        <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        <path d="M16 16l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <circle
+          cx="11"
+          cy="11"
+          r="6"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+        />
+        <path
+          d="M16 16l4 4"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
       </>
     ),
     paw: (
@@ -38,7 +51,14 @@ function NavIcon({ name }) {
     ),
     person: (
       <>
-        <circle cx="12" cy="8" r="3.5" stroke="currentColor" strokeWidth="1.5" fill="none" />
+        <circle
+          cx="12"
+          cy="8"
+          r="3.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+        />
         <path
           d="M5 20c0-3.5 3.1-6 7-6s7 2.5 7 6"
           stroke="currentColor"
@@ -49,8 +69,22 @@ function NavIcon({ name }) {
     ),
     calendar: (
       <>
-        <rect x="4" y="5" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        <path d="M4 9h16M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        <rect
+          x="4"
+          y="5"
+          width="16"
+          height="15"
+          rx="2"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          fill="none"
+        />
+        <path
+          d="M4 9h16M8 3v4M16 3v4"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
       </>
     ),
   };
@@ -62,28 +96,43 @@ function NavIcon({ name }) {
   );
 }
 
-export default function AppNavbar() {
+export default function AppNavbar({ activeNav = 'home' }) {
   const navigate = useNavigate();
 
   function handleLogout() {
     clearAccessToken();
+    clearCurrentOwnerId();
     navigate('/login', { replace: true });
+  }
+
+  function handleNavClick(item, event) {
+    event.preventDefault();
+    if (item.path) {
+      navigate(item.path);
+    }
   }
 
   return (
     <header className="app-navbar">
       <div className="app-navbar__inner">
-        <BrandLogo />
+        <button
+          type="button"
+          className="app-navbar__logo-btn"
+          onClick={() => navigate('/')}
+          aria-label="Go to home"
+        >
+          <BrandLogo />
+        </button>
 
         <nav className="app-navbar__nav" aria-label="Main">
           <ul className="app-navbar__links">
             {NAV_ITEMS.map((item) => (
               <li key={item.id}>
                 <a
-                  href="#"
-                  className={`app-navbar__link ${item.active ? 'app-navbar__link--active' : ''}`}
-                  aria-current={item.active ? 'page' : undefined}
-                  onClick={(e) => e.preventDefault()}
+                  href={item.path ?? '#'}
+                  className={`app-navbar__link ${item.id === activeNav ? 'app-navbar__link--active' : ''}`}
+                  aria-current={item.id === activeNav ? 'page' : undefined}
+                  onClick={(e) => handleNavClick(item, e)}
                 >
                   <NavIcon name={item.icon} />
                   {item.label}
@@ -94,14 +143,29 @@ export default function AppNavbar() {
         </nav>
 
         <div className="app-navbar__actions">
-          <button type="button" className="app-navbar__btn-primary">
+          <button
+            type="button"
+            className="app-navbar__btn-primary"
+            onClick={() => navigate('/owners/new')}
+          >
             + Add Owner
           </button>
           <div className="app-navbar__user">
             <div className="app-navbar__profile">
               <span className="app-navbar__avatar" aria-hidden="true">
-                <svg className="app-navbar__user-icon" viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                <svg
+                  className="app-navbar__user-icon"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="12"
+                    cy="8"
+                    r="4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    fill="none"
+                  />
                   <path
                     d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"
                     stroke="currentColor"
@@ -113,7 +177,11 @@ export default function AppNavbar() {
               </span>
               <span className="app-navbar__role">Admin</span>
             </div>
-            <button type="button" className="app-navbar__logout" onClick={handleLogout}>
+            <button
+              type="button"
+              className="app-navbar__logout"
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </div>

@@ -1,3 +1,4 @@
+import AppFooter from '../components/AppFooter.jsx';
 import AppNavbar from '../components/AppNavbar.jsx';
 import { PawIcon } from '../components/BrandLogo.jsx';
 import HeroIllustration from '../components/HeroIllustration.jsx';
@@ -7,14 +8,22 @@ import './HomePage.css';
 function QuickActionCard({ variant, title, description, buttonLabel, icon }) {
   return (
     <article className={`action-card action-card--${variant}`}>
-      <div className={`action-card__icon action-card__icon--${variant}`}>{icon}</div>
+      <div className={`action-card__icon action-card__icon--${variant}`}>
+        {icon}
+      </div>
       <h3 className="action-card__title">{title}</h3>
       <p className="action-card__desc">{description}</p>
-      <button type="button" className={`action-card__btn action-card__btn--${variant}`}>
+      <button
+        type="button"
+        className={`action-card__btn action-card__btn--${variant}`}
+      >
         {buttonLabel}
         <span aria-hidden="true">→</span>
       </button>
-      <div className={`action-card__decor action-card__decor--${variant}`} aria-hidden="true" />
+      <div
+        className={`action-card__decor action-card__decor--${variant}`}
+        aria-hidden="true"
+      />
     </article>
   );
 }
@@ -22,7 +31,7 @@ function QuickActionCard({ variant, title, description, buttonLabel, icon }) {
 export default function HomePage() {
   return (
     <div className="home-page">
-      <AppNavbar />
+      <AppNavbar activeNav="home" />
 
       <main className="home-main">
         <section className="hero">
@@ -34,7 +43,9 @@ export default function HomePage() {
               Manage owners, pets, visits and veterinarians in one simple place.
             </p>
             <div className="hero__divider" />
-            <p className="hero__tagline">Your all-in-one solution for better pet care.</p>
+            <p className="hero__tagline">
+              Your all-in-one solution for better pet care.
+            </p>
           </div>
           <div className="hero__visual">
             <HeroIllustration />
@@ -51,9 +62,27 @@ export default function HomePage() {
               buttonLabel="Search Owners"
               icon={
                 <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <circle cx="14" cy="12" r="6" stroke="currentColor" strokeWidth="2" fill="none" />
-                  <path d="M19 17l5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  <circle cx="22" cy="10" r="4" fill="currentColor" opacity="0.3" />
+                  <circle
+                    cx="14"
+                    cy="12"
+                    r="6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                  />
+                  <path
+                    d="M19 17l5 5"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                  <circle
+                    cx="22"
+                    cy="10"
+                    r="4"
+                    fill="currentColor"
+                    opacity="0.3"
+                  />
                 </svg>
               }
             />
@@ -75,9 +104,7 @@ export default function HomePage() {
         </section>
       </main>
 
-      <footer className="home-footer">
-        © 2026 VetCare Clinic Management System. All rights reserved.
-      </footer>
+      <AppFooter />
     </div>
   );
 }

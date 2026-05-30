@@ -160,7 +160,9 @@
   background: transparent;
   border-radius: var(--radius-md);
   border: 2px solid;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 .action-card__btn--blue {
@@ -199,15 +201,6 @@
 
 .action-card__decor--green {
   background: radial-gradient(circle at 100% 100%, #22c55e 0%, transparent 70%);
-}
-
-.home-footer {
-  padding: 24px;
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  border-top: 1px solid var(--color-border);
-  background: var(--color-surface);
 }
 
 @media (max-width: 900px) {

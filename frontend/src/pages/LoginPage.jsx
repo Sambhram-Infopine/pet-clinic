@@ -84,7 +84,9 @@ export default function LoginPage() {
       if (data.success) {
         const token = data.access_token ?? data.accessToken;
         if (!token) {
-          setError('Login succeeded but no access token was returned. Please try again.');
+          setError(
+            'Login succeeded but no access token was returned. Please try again.'
+          );
           return;
         }
         sessionStorage.setItem(ACCESS_TOKEN_KEY, token);
