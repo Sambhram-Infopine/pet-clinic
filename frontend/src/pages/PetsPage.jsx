@@ -8,6 +8,7 @@ import AppNavbar from '../components/AppNavbar.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import { PawIcon } from '../components/BrandLogo.jsx';
 import {
+  clearOwnerWorkflow,
   getCurrentOwnerId,
   getCurrentOwnerSnapshot,
   getStoredPets,
@@ -418,7 +419,10 @@ export default function PetsPage() {
           <button
             type="button"
             className="pets-page__btn pets-page__btn--outline"
-            onClick={() => navigate('/')}
+            onClick={() => {
+              clearOwnerWorkflow();
+              navigate('/');
+            }}
             disabled={pageLoading || saving}
           >
             Back to Home

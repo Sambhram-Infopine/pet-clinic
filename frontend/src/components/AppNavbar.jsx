@@ -9,7 +9,12 @@ const NAV_ITEMS = [
   { id: 'home', label: 'Home', path: '/', icon: 'home' },
   { id: 'owners', label: 'Find Owners', path: null, icon: 'search' },
   { id: 'pets', label: 'Pet Lookup', path: '/pets', icon: 'paw' },
-  { id: 'vets', label: 'Veterinarians', path: null, icon: 'person' },
+  {
+    id: 'vets',
+    label: 'Veterinarians',
+    path: '/veterinarians',
+    icon: 'person',
+  },
   { id: 'visits', label: 'Visit History', path: null, icon: 'calendar' },
 ];
 
@@ -146,7 +151,10 @@ export default function AppNavbar({ activeNav = 'home' }) {
           <button
             type="button"
             className="app-navbar__btn-primary"
-            onClick={() => navigate('/owners/new')}
+            onClick={() => {
+              clearOwnerWorkflow();
+              navigate('/owners/new', { state: { reset: Date.now() } });
+            }}
           >
             + Add Owner
           </button>

@@ -5,6 +5,7 @@ import AppFooter from '../components/AppFooter.jsx';
 import AppNavbar from '../components/AppNavbar.jsx';
 import Breadcrumbs from '../components/Breadcrumbs.jsx';
 import {
+  clearOwnerWorkflow,
   formToSnapshot,
   getCurrentOwnerId,
   getCurrentOwnerSnapshot,
@@ -139,6 +140,7 @@ export default function AddOwnerPage() {
         return;
       }
 
+      clearOwnerWorkflow();
       setSuccessMessage('Owner saved successfully.');
       setTimeout(() => navigate('/'), 800);
     };
@@ -201,6 +203,7 @@ export default function AddOwnerPage() {
   }
 
   function handleCancel() {
+    clearOwnerWorkflow();
     navigate('/');
   }
 
