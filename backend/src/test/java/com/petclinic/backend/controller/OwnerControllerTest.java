@@ -3,7 +3,6 @@ package com.petclinic.backend.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petclinic.backend.dto.OwnerRequestDto;
 import com.petclinic.backend.dto.OwnerResponseDto;
-import com.petclinic.backend.exception.InvalidCredentialsException;
 import com.petclinic.backend.service.OwnerService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +35,9 @@ class OwnerControllerTest {
         OwnerRequestDto req = OwnerRequestDto.builder()
                 .firstName("Jane")
                 .lastName("Doe")
+                .address("1 Main St")
+                .city("Town")
+                .telephoneNumber("1234567890")
                 .build();
 
         when(ownerService.createOwner(any())).thenReturn(OwnerResponseDto.builder().id(1L).firstName("Jane").build());

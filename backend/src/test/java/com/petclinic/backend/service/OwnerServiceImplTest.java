@@ -22,6 +22,9 @@ class OwnerServiceImplTest {
     @Mock
     private OwnerDao ownerDao;
 
+    @Mock
+    private NotificationService notificationService;
+
     @InjectMocks
     private OwnerServiceImpl ownerService;
 
@@ -56,6 +59,7 @@ class OwnerServiceImplTest {
         assertEquals(sampleOwner.getId(), res.getId());
         assertEquals("Jane", res.getFirstName());
         verify(ownerDao).save(any());
+        verify(notificationService).sendOwnerRegistrationNotification("1234567890");
     }
 
     @Test

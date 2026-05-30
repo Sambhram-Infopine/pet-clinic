@@ -12,9 +12,11 @@ import org.springframework.web.server.ResponseStatusException;
 public class OwnerServiceImpl implements OwnerService {
 
     private final OwnerDao ownerDao;
+    private final NotificationService notificationService;
 
-    public OwnerServiceImpl(OwnerDao ownerDao) {
+    public OwnerServiceImpl(OwnerDao ownerDao, NotificationService notificationService) {
         this.ownerDao = ownerDao;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -27,7 +29,10 @@ public class OwnerServiceImpl implements OwnerService {
                 .telephoneNumber(request.getTelephoneNumber())
                 .build();
 
-        return toResponse(ownerDao.save(owner));
+        Owner savedOwner = ownerDao.save(owner);
+        notificationService.sendOwnerRegistrationNotification(savedOwner.getTelephoneNumber());
+
+        return toResponse(savedOwner);
     }
 
     @Override
