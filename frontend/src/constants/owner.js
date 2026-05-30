@@ -123,3 +123,38 @@ export function hasSavedOwnerInSession() {
   const snapshot = getCurrentOwnerSnapshot();
   return Boolean(id && snapshot?.id && String(snapshot.id) === String(id));
 }
+
+function splitOwnerName(ownerName) {
+  const trimmed = (ownerName ?? '').trim();
+  if (!trimmed) return { firstName: '', lastName: '' };
+  const space = trimmed.indexOf(' ');
+  if (space === -1) return { firstName: trimmed, lastName: '' };
+  return {
+    firstName: trimmed.slice(0, space),
+    lastName: trimmed.slice(space + 1).trim(),
+  };
+}
+
+/** Seed owner workflow from GET /api/pets-search row (no extra API calls). */
+export function setOwnerWorkflowFromPetSearch(pet) {
+  const { firstName, lastName } = splitOwnerName(pet.ownerName);
+
+  setCurrentOwnerId(pet.ownerId);
+  setCurrentOwnerSnapshot({
+    id: pet.ownerId,
+    firstName,
+    lastName,
+    address: '',
+    city: '',
+    telephoneNumber: pet.ownerTelephoneNumber ?? '',
+  });
+  setStoredPets(pet.ownerId, [
+    {
+      id: pet.petId,
+      name: pet.petName,
+      birthDate: pet.birthDate,
+      petTypeId: pet.petTypeId,
+      petTypeName: pet.petTypeName,
+    },
+  ]);
+}

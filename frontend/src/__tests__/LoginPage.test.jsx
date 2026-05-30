@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import LoginPage from '../pages/LoginPage.jsx';
 import { vi } from 'vitest';
@@ -40,7 +39,9 @@ describe('LoginPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
 
-    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/', { replace: true }));
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith('/', { replace: true })
+    );
     expect(sessionStorage.getItem('access_token')).toBe('abc123');
   });
 });

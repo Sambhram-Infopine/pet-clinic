@@ -210,7 +210,7 @@ export default function PetsPage() {
   if (!ownerId) {
     return (
       <div className="pets-page">
-        <AppNavbar activeNav="pets" />
+        <AppNavbar activeNav="" />
         <main className="pets-page__main">
           <div className="pets-page__empty">
             <p>No owner selected. Please add an owner first.</p>
@@ -234,7 +234,7 @@ export default function PetsPage() {
 
   return (
     <div className="pets-page">
-      <AppNavbar activeNav="pets" />
+      <AppNavbar activeNav="" />
 
       <main className="pets-page__main">
         <Breadcrumbs
