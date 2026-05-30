@@ -1,16 +1,37 @@
-# React + Vite
+﻿# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend is a React application built with Vite. It provides the user interface for VetCare, including login, navigation, and protected routes for authenticated users.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `src/App.jsx` — main application shell and route configuration
+- `src/main.jsx` — app entry point
+- `src/pages/` — page components such as `LoginPage`, `HomePage`, `PetsPage`, and `AddOwnerPage`
+- `src/components/` — reusable UI elements like `ProtectedRoute`, `GuestRoute`, `AppNavbar`, and branding components
+- `src/constants/` — authentication helpers and workflow state
+- `src/__tests__/` — frontend unit tests for page and route behavior
 
-## React Compiler
+## Scripts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `npm run dev` — start the Vite development server
+- `npm run build` — build production assets
+- `npm run preview` — preview the production build
+- `npm run lint` — run ESLint
+- `npm run format` — format files with Prettier
+- `npm test` — run frontend tests with Vitest
 
-## Expanding the ESLint configuration
+## Testing
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The frontend uses Vitest and Testing Library for component-level tests.
+
+```powershell
+cd frontend
+npm install
+npm test
+```
+
+## Notes
+
+- Login state is stored in `sessionStorage` using `access_token`.
+- `ProtectedRoute` and `GuestRoute` enforce authentication flow.
+- Update API paths in `LoginPage.jsx` if backend endpoints change.
